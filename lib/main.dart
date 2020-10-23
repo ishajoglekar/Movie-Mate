@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'movie_list.dart';
+import 'home.dart';
 
 void main() => runApp(new MyApp());
 
@@ -8,8 +8,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: new MovieList(),
+      home: new Home(),
     );
   }
 }

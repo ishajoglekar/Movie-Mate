@@ -83,7 +83,10 @@ class MovieListState extends State<MovieList> {
 
 Future<Map> getJson() async {
   var url =
-      'https://api.themoviedb.org/3/movie/top_rated?api_key=45bf6592c14a965b33549f4cc7e6c664';
+      // 'https://api.themoviedb.org/3/movie/top_rated?api_key=45bf6592c14a965b33549f4cc7e6c664';
+      'http://api.themoviedb.org/3/movie/top_rated?api_key=45bf6592c14a965b33549f4cc7e6c664&append_to_response=videos';
+
+  // http://api.themoviedb.org/3/movie/131634?api_key=45bf6592c14a965b33549f4cc7e6c664&append_to_response=videos
   var response = await http.get(url);
   return json.decode(response.body);
 }
