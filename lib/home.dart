@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'movie_details.dart';
+import 'package:video_player/video_player.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -11,9 +12,66 @@ class Home extends StatefulWidget {
   }
 }
 
+// class VideoDemo extends StatefulWidget {
+//   @override
+//   VideoDemoState createState() => VideoDemoState();
+// }
+
+// class VideoDemoState extends State<VideoDemo> {
+
+//   VideoPlayerController _controller;
+//   Future<void> _initializeVideoPlayerFuture;
+
+//   @override
+//   void initState() {
+//     // _controller = VideoPlayerController.network(
+//         // "https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4");
+//     _controller = VideoPlayerController.asset("videplayback.mp4");
+//     _initializeVideoPlayerFuture = _controller.initialize();
+//     _controller.setLooping(true);
+//     _controller.setVolume(1.0);
+//     super.initState();
+//   }
+
+//   @override
+//   void dispose() {
+//     _controller.dispose();
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//     );
+//   }
+// }
+
 class HomeState extends State<Home> {
-  var movies;
-  Color mainColor = const Color(0xff3C3261);
+  var movies, latest_movies;
+  Color mainColor = Colors.orange;
+
+  VideoPlayerController _controller;
+  Future<void> _initializeVideoPlayerFuture;
+
+  get floatingActionButton => null;
+
+  @override
+  void initState() {
+    _controller = VideoPlayerController.network(
+        "https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4");
+    // _controller = VideoPlayerController.asset("videoplayback.mp4");
+    _initializeVideoPlayerFuture = _controller.initialize();
+    _controller.setLooping(true);
+    _controller.setVolume(1.0);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   void getData() async {
     var data = await getJson();
@@ -23,26 +81,34 @@ class HomeState extends State<Home> {
     });
   }
 
+  void getLatestData() async {
+    var data = await getLatestJson();
+
+    setState(() {
+      latest_movies = data['results'];
+    });
+  }
+
   var image_url1 = 'https://image.tmdb.org/t/p/w500/';
   @override
   Widget build(BuildContext context) {
     getData();
-
+    getLatestData();
     return new Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         appBar: new AppBar(
           elevation: 0.3,
           centerTitle: true,
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.black,
           leading: new Icon(
             Icons.arrow_back,
             color: mainColor,
           ),
           title: new Text(
-            'Movies',
+            'Movie Mate',
             style: new TextStyle(
                 color: mainColor,
-                fontFamily: 'Arvo',
+                fontFamily: 'Poppins',
                 fontWeight: FontWeight.bold),
           ),
           actions: <Widget>[
@@ -53,17 +119,48 @@ class HomeState extends State<Home> {
           ],
         ),
         body: new Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(10.0),
+          // scrollDirection: Axis.vertical,
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              FutureBuilder(
+                future: _initializeVideoPlayerFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return Center(
+                      child: AspectRatio(
+                        aspectRatio: _controller.value.aspectRatio,
+                        child: VideoPlayer(_controller),
+                      ),
+                    );
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+              ),
+              // floatingActionButton: FloatingActionButton(
+              //   onPressed: () {
+              //     setState(() {
+              //       if (_controller.value.isPlaying) {
+              //         _controller.pause();
+              //       } else {
+              //         _controller.play();
+              //       }
+              //     });
+              //   },
+              //   child:
+              //   Icon(_controller.value.isPlaying ? Icons.pause : Icons.play_arrow),
+              // ),
               new Text(
-                'Latest Releases',
+                'Top Releases',
                 style: new TextStyle(
                     fontSize: 20.0,
                     color: mainColor,
                     fontWeight: FontWeight.bold,
-                    fontFamily: 'Arvo'),
+                    fontFamily: 'Poppins'),
                 textAlign: TextAlign.left,
               ),
               new Expanded(
@@ -80,7 +177,35 @@ class HomeState extends State<Home> {
                             return new MovieDetail(movies[i]);
                           }));
                         },
-                        color: Colors.white,
+                        color: Colors.black,
+                      );
+                    }),
+              ),
+
+              new Text(
+                'Upcoming Releases',
+                style: new TextStyle(
+                    fontSize: 20.0,
+                    color: mainColor,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins'),
+                textAlign: TextAlign.left,
+              ),
+              new Expanded(
+                child: new ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 5,
+                    itemBuilder: (context, i) {
+                      return new FlatButton(
+                        child: new HomeMovieCell(latest_movies, i),
+                        padding: const EdgeInsets.all(0.0),
+                        onPressed: () {
+                          Navigator.push(context,
+                              new MaterialPageRoute(builder: (context) {
+                            return new MovieDetail(latest_movies[i]);
+                          }));
+                        },
+                        color: Colors.black,
                       );
                     }),
               ),
@@ -100,10 +225,20 @@ Future<Map> getJson() async {
   return json.decode(response.body);
 }
 
+Future<Map> getLatestJson() async {
+  var url =
+      // 'https://api.themoviedb.org/3/movie/top_rated?api_key=45bf6592c14a965b33549f4cc7e6c664';
+      'http://api.themoviedb.org/3/movie/upcoming?api_key=45bf6592c14a965b33549f4cc7e6c664&append_to_response=videos';
+
+  // http://api.themoviedb.org/3/movie/131634?api_key=45bf6592c14a965b33549f4cc7e6c664&append_to_response=videos
+  var response = await http.get(url);
+  return json.decode(response.body);
+}
+
 class HomeMovieCell extends StatelessWidget {
   final movies;
   final i;
-  Color mainColor = const Color(0xff3C3261);
+  Color mainColor = Colors.orange;
   var image_url = 'https://image.tmdb.org/t/p/w500/';
   HomeMovieCell(this.movies, this.i);
 
@@ -116,7 +251,7 @@ class HomeMovieCell extends StatelessWidget {
             new Padding(
               padding: const EdgeInsets.all(0.0),
               child: new Container(
-                margin: const EdgeInsets.all(16.0),
+                margin: const EdgeInsets.all(6.0),
 //                                child: new Image.network(image_url+movies[i]['poster_path'],width: 100.0,height: 100.0),
                 child: new Container(
                   width: 100.0,
@@ -142,9 +277,9 @@ class HomeMovieCell extends StatelessWidget {
         ),
         new Container(
           width: 100.0,
-          height: 0.5,
-          color: const Color(0xD2D2E1ff),
-          margin: const EdgeInsets.all(16.0),
+          height: 0.2,
+          color: Colors.black,
+          margin: const EdgeInsets.all(10.0),
         )
       ],
     );

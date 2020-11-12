@@ -11,14 +11,10 @@ class MovieDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Scaffold(
       body: new Stack(fit: StackFit.expand, children: [
-        new Image.network(
-          image_url + movie['poster_path'],
-          fit: BoxFit.cover,
-        ),
         new BackdropFilter(
           filter: new ui.ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
           child: new Container(
-            color: Colors.black.withOpacity(0.5),
+            color: Colors.black.withOpacity(1),
           ),
         ),
         new SingleChildScrollView(
@@ -35,13 +31,13 @@ class MovieDetail extends StatelessWidget {
                   decoration: new BoxDecoration(
                       borderRadius: new BorderRadius.circular(10.0),
                       image: new DecorationImage(
-                          image: new NetworkImage(
-                              image_url + movie['poster_path']),
-                          fit: BoxFit.cover),
+                        image:
+                            new NetworkImage(image_url + movie['poster_path']),
+                      ),
                       boxShadow: [
                         new BoxShadow(
                             color: Colors.black,
-                            blurRadius: 20.0,
+                            blurRadius: 0.0,
                             offset: new Offset(0.0, 10.0))
                       ]),
                 ),
@@ -96,7 +92,7 @@ class MovieDetail extends StatelessWidget {
                         padding: const EdgeInsets.all(16.0),
                         alignment: Alignment.center,
                         child: new Icon(
-                          Icons.share,
+                          Icons.star,
                           color: Colors.white,
                         ),
                         decoration: new BoxDecoration(
@@ -110,8 +106,8 @@ class MovieDetail extends StatelessWidget {
                           padding: const EdgeInsets.all(16.0),
                           alignment: Alignment.center,
                           child: new Icon(
-                            Icons.bookmark,
-                            color: Colors.white,
+                            Icons.check,
+                            color: Colors.green,
                           ),
                           decoration: new BoxDecoration(
                               borderRadius: new BorderRadius.circular(10.0),
