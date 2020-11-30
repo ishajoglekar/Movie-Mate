@@ -2,15 +2,16 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:movie_mate/tv_details.dart';
 import 'movie_details.dart';
 import 'homeMenu.dart';
 import 'package:video_player/video_player.dart';
 
-class Home extends StatefulWidget {
+import 'movies_menu.dart';
+
+class Movie extends StatefulWidget {
   @override
-  HomeState createState() {
-    return new HomeState();
+  MovieState createState() {
+    return new MovieState();
   }
 }
 
@@ -48,7 +49,7 @@ class Home extends StatefulWidget {
 //   }
 // }
 
-class HomeState extends State<Home> {
+class MovieState extends State<Movie> {
   var movies, latest_movies, topTV, popularTV;
   Color mainColor = Colors.orange;
 
@@ -82,11 +83,11 @@ class HomeState extends State<Home> {
     });
   }
 
-  void getPopularTVData() async {
-    var data = await getPopularTVJson();
+  void getLatestData() async {
+    var data = await getLatestJson();
 
     setState(() {
-      popularTV = data['results'];
+      latest_movies = data['results'];
     });
   }
 
@@ -94,7 +95,7 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     getData();
-    getPopularTVData();
+    getLatestData();
     return new Scaffold(
         backgroundColor: Colors.black,
         appBar: new AppBar(
@@ -103,8 +104,8 @@ class HomeState extends State<Home> {
           backgroundColor: Colors.black,
           leading: new InkWell(
             onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => HomeMenu()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MoviesMenu()));
             },
             child: new Icon(
               Icons.menu,
@@ -159,7 +160,7 @@ class HomeState extends State<Home> {
                 height: 50,
               ),
               new Text(
-                'Top Movie Releases',
+                'Top Releases',
                 style: new TextStyle(
                     fontSize: 20.0,
                     color: mainColor,
@@ -187,7 +188,7 @@ class HomeState extends State<Home> {
               ),
 
               new Text(
-                'Popular TV Series',
+                'Upcoming Releases',
                 style: new TextStyle(
                     fontSize: 20.0,
                     color: mainColor,
@@ -201,12 +202,12 @@ class HomeState extends State<Home> {
                     itemCount: 5,
                     itemBuilder: (context, i) {
                       return new FlatButton(
-                        child: new HomeMovieCell(popularTV, i),
+                        child: new HomeMovieCell(latest_movies, i),
                         padding: const EdgeInsets.all(0.0),
                         onPressed: () {
                           Navigator.push(context,
                               new MaterialPageRoute(builder: (context) {
-                            return new TVDetails(popularTV[i]);
+                            return new MovieDetail(latest_movies[i]);
                           }));
                         },
                         color: Colors.black,
@@ -229,10 +230,10 @@ Future<Map> getJson() async {
   return json.decode(response.body);
 }
 
-Future<Map> getPopularTVJson() async {
+Future<Map> getLatestJson() async {
   var url =
       // 'https://api.themoviedb.org/3/movie/top_rated?api_key=45bf6592c14a965b33549f4cc7e6c664';
-      'http://api.themoviedb.org/3/tv/popular?api_key=45bf6592c14a965b33549f4cc7e6c664&append_to_response=videos';
+      'http://api.themoviedb.org/3/movie/upcoming?api_key=45bf6592c14a965b33549f4cc7e6c664&append_to_response=videos';
 
   // http://api.themoviedb.org/3/movie/131634?api_key=45bf6592c14a965b33549f4cc7e6c664&append_to_response=videos
   var response = await http.get(url);
