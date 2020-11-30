@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class MovieDetail extends StatelessWidget {
   final movie;
@@ -8,7 +9,7 @@ class MovieDetail extends StatelessWidget {
   Color mainColor = const Color(0xff3C3261);
 
   @override
-  Widget build(BuildContext context) {
+Widget build(BuildContext context) {
     return new Scaffold(
       body: new Stack(fit: StackFit.expand, children: [
         new BackdropFilter(
@@ -67,54 +68,78 @@ class MovieDetail extends StatelessWidget {
                 new Text(movie['overview'],
                     style:
                         new TextStyle(color: Colors.white, fontFamily: 'Arvo')),
+                new Padding(padding: const EdgeInsets.all(50.0)),
+                new Text('Rate this Movie :',
+                    style: new TextStyle(
+                      color: Colors.white,
+                      fontSize: 25.0,
+                      fontFamily: 'Arvo',
+                    )),
                 new Padding(padding: const EdgeInsets.all(10.0)),
                 new Row(
                   children: <Widget>[
+                    new Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 30.0, 0, 0)),
+                    new SizedBox(
+                      height: 100,
+                    ),
                     new Expanded(
                         child: new Container(
-                      width: 150.0,
-                      height: 60.0,
+                      width: 50.0,
+                      height: 100.0,
                       alignment: Alignment.center,
-                      child: new Text(
-                        'Rate Movie',
-                        style: new TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Arvo',
-                            fontSize: 20.0),
-                      ),
+                      child: SmoothStarRating(
+                          rating: 4,
+                          isReadOnly: false,
+                          size: 50,
+                          color: Colors.yellow,
+                          borderColor: Colors.yellow,
+                          filledIconData: Icons.star,
+                          halfFilledIconData: Icons.star_half,
+                          defaultIconData: Icons.star_border,
+                          starCount: 5,
+                          allowHalfRating: true,
+                          spacing: 2.0,
+                          onRated: (value) {
+                            print("rating value -> $value");
+                            // print("rating value dd -> ${value.truncate()}");
+                          }),
                       decoration: new BoxDecoration(
+                          // new Text('Rate this series',
+                          //     style: new TextStyle(
+                          //         color: Colors.white, fontFamily: 'Arvo')),
                           borderRadius: new BorderRadius.circular(10.0),
                           color: const Color(0xaa3C3261)),
                     )),
-                    new Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: new Container(
-                        padding: const EdgeInsets.all(16.0),
-                        alignment: Alignment.center,
-                        child: new InkWell(
-                          child: new Icon(
-                            Icons.star,
-                            color: Colors.yellow,
-                          ),
-                        ),
-                        decoration: new BoxDecoration(
-                            borderRadius: new BorderRadius.circular(10.0),
-                            color: const Color(0xaa3C3261)),
-                      ),
-                    ),
-                    new Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: new Container(
-                          padding: const EdgeInsets.all(16.0),
-                          alignment: Alignment.center,
-                          child: new Icon(
-                            Icons.check,
-                            color: Colors.green,
-                          ),
-                          decoration: new BoxDecoration(
-                              borderRadius: new BorderRadius.circular(10.0),
-                              color: const Color(0xaa3C3261)),
-                        )),
+                    // new Padding(
+                    //   padding: const EdgeInsets.all(16.0),
+                    //   child: new Container(
+                    //     padding: const EdgeInsets.all(16.0),
+                    //     alignment: Alignment.center,
+                    //     child: new InkWell(
+                    //       child: new Icon(
+                    //         Icons.star,
+                    //         color: Colors.yellow,
+                    //       ),
+                    //     ),
+                    //     decoration: new BoxDecoration(
+                    //         borderRadius: new BorderRadius.circular(10.0),
+                    //         color: const Color(0xaa3C3261)),
+                    //   ),
+                    // ),
+                    // new Padding(
+                    //     padding: const EdgeInsets.all(8.0),
+                    //     child: new Container(
+                    //       padding: const EdgeInsets.all(16.0),
+                    //       alignment: Alignment.center,
+                    //       child: new Icon(
+                    //         Icons.check,
+                    //         color: Colors.green,
+                    //       ),
+                    //       decoration: new BoxDecoration(
+                    //           borderRadius: new BorderRadius.circular(10.0),
+                    //           color: const Color(0xaa3C3261)),
+                    //     )),
                   ],
                 )
               ],

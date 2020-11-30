@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:movie_mate/movies_menu.dart';
 import 'movie_details.dart';
 
-class MovieList extends StatefulWidget {
+class UpcomingMovieList extends StatefulWidget {
   @override
-  MovieListState createState() {
-    return new MovieListState();
+  UpcomingMovieListState createState() {
+    return new UpcomingMovieListState();
   }
 }
 
-class MovieListState extends State<MovieList> {
+class UpcomingMovieListState extends State<UpcomingMovieList> {
   var movies;
   Color mainColor = Color(0xfff7892b);
 
@@ -85,7 +85,7 @@ class MovieListState extends State<MovieList> {
 Future<Map> getJson() async {
   var url =
       // 'https://api.themoviedb.org/3/movie/top_rated?api_key=45bf6592c14a965b33549f4cc7e6c664';
-      'http://api.themoviedb.org/3/movie/top_rated?api_key=45bf6592c14a965b33549f4cc7e6c664&append_to_response=videos';
+      'http://api.themoviedb.org/3/movie/upcoming?api_key=45bf6592c14a965b33549f4cc7e6c664&append_to_response=videos';
 
   // http://api.themoviedb.org/3/movie/131634?api_key=45bf6592c14a965b33549f4cc7e6c664&append_to_response=videos
   var response = await http.get(url);
@@ -102,7 +102,7 @@ class MovieTitle extends StatelessWidget {
     return new Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
       child: new Text(
-        'Top Rated Movies',
+        'Upcoming Movies',
         style: new TextStyle(
             fontSize: 30.0,
             color: Color(0xfff7892b),

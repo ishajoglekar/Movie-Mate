@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:movie_mate/welcomePage.dart';
-import 'home.dart';
 
 void main() => runApp(new MyApp());
 
@@ -10,7 +9,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Movie Mate',
       home: new WelcomePage(),
     );
   }

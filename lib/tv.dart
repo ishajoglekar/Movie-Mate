@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:movie_mate/TVSeriesMenu.dart';
+import 'package:movie_mate/popularSeries.dart';
+import 'package:movie_mate/topRatedSeries.dart';
 import 'package:movie_mate/tv_details.dart';
 import 'home.dart';
-import 'movie_details.dart';
+import 'package:movie_mate/movie_list.dart';
 import 'package:video_player/video_player.dart';
 
 class TVSeries extends StatefulWidget {
@@ -93,7 +95,13 @@ class TVSeriesState extends State<TVSeries> {
 
   void topratedlist(BuildContext context) {
     Navigator.push(context, new MaterialPageRoute(builder: (context) {
-      return new Home();
+      return new topRatedSeries();
+    }));
+  }
+
+  void popular(BuildContext context) {
+    Navigator.push(context, new MaterialPageRoute(builder: (context) {
+      return new popularSeries();
     }));
   }
 
@@ -149,23 +157,6 @@ class TVSeriesState extends State<TVSeries> {
                   }
                 },
               ),
-              // floatingActionButton: FloatingActionButton(
-              //   onPressed: () {
-              //     setState(() {
-              //       if (_controller.value.isPlaying) {
-              //         _controller.pause();
-              //       } else {
-              //         _controller.play();
-              //       }
-              //     });
-              //   },
-              //   child:
-              //   Icon(_controller.value.isPlaying ? Icons.pause : Icons.play_arrow),
-              // ),
-              new SizedBox(
-                height: 50,
-              ),
-
               new Row(
                 children: [
                   new Text(
@@ -178,10 +169,10 @@ class TVSeriesState extends State<TVSeries> {
                     textAlign: TextAlign.left,
                   ),
                   new SizedBox(
-                    width: 200,
+                    width: 165,
                   ),
                   new RaisedButton(
-                      child: Text('Navigate To Second Screen',
+                      child: Text('View All',
                           style: new TextStyle(
                               fontSize: 20.0,
                               color: Colors.white,
@@ -194,7 +185,6 @@ class TVSeriesState extends State<TVSeries> {
                       }),
                 ],
               ),
-
               new Expanded(
                 child: new ListView.builder(
                     scrollDirection: Axis.horizontal,
@@ -213,15 +203,33 @@ class TVSeriesState extends State<TVSeries> {
                       );
                     }),
               ),
-
-              new Text(
-                'Popular TV Series',
-                style: new TextStyle(
-                    fontSize: 20.0,
-                    color: mainColor,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Poppins'),
-                textAlign: TextAlign.left,
+              new Row(
+                children: [
+                  new Text(
+                    'Popular Series',
+                    style: new TextStyle(
+                        fontSize: 20.0,
+                        color: mainColor,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Poppins'),
+                    textAlign: TextAlign.left,
+                  ),
+                  new SizedBox(
+                    width: 185,
+                  ),
+                  new RaisedButton(
+                      child: Text('View All',
+                          style: new TextStyle(
+                              fontSize: 20.0,
+                              color: Colors.white,
+                              decoration: TextDecoration.underline,
+                              fontFamily: 'Poppins')),
+                      color: Colors.black,
+                      textColor: Colors.white,
+                      onPressed: () {
+                        popular(context);
+                      }),
+                ],
               ),
               new Expanded(
                 child: new ListView.builder(

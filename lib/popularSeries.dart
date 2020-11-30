@@ -3,16 +3,18 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:movie_mate/movies_menu.dart';
+import 'package:movie_mate/tv_details.dart';
+import 'TVSeriesMenu.dart';
 import 'movie_details.dart';
 
-class MovieList extends StatefulWidget {
+class popularSeries extends StatefulWidget {
   @override
-  MovieListState createState() {
-    return new MovieListState();
+  popularSeriesState createState() {
+    return new popularSeriesState();
   }
 }
 
-class MovieListState extends State<MovieList> {
+class popularSeriesState extends State<popularSeries> {
   var movies;
   Color mainColor = Color(0xfff7892b);
 
@@ -37,7 +39,7 @@ class MovieListState extends State<MovieList> {
         leading: new InkWell(
           onTap: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => MoviesMenu()));
+                context, MaterialPageRoute(builder: (context) => TVSeriesMenu()));
           },
           child: new Icon(
             Icons.menu,
@@ -68,7 +70,7 @@ class MovieListState extends State<MovieList> {
                       onPressed: () {
                         Navigator.push(context,
                             new MaterialPageRoute(builder: (context) {
-                          return new MovieDetail(movies[i]);
+                          return new TVDetails(movies[i]);
                         }));
                       },
                       color: Colors.white,
@@ -85,7 +87,7 @@ class MovieListState extends State<MovieList> {
 Future<Map> getJson() async {
   var url =
       // 'https://api.themoviedb.org/3/movie/top_rated?api_key=45bf6592c14a965b33549f4cc7e6c664';
-      'http://api.themoviedb.org/3/movie/top_rated?api_key=45bf6592c14a965b33549f4cc7e6c664&append_to_response=videos';
+      'http://api.themoviedb.org/3/tv/popular?api_key=45bf6592c14a965b33549f4cc7e6c664&append_to_response=videos';
 
   // http://api.themoviedb.org/3/movie/131634?api_key=45bf6592c14a965b33549f4cc7e6c664&append_to_response=videos
   var response = await http.get(url);
@@ -102,7 +104,7 @@ class MovieTitle extends StatelessWidget {
     return new Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
       child: new Text(
-        'Top Rated Movies',
+        'Popular Series',
         style: new TextStyle(
             fontSize: 30.0,
             color: Color(0xfff7892b),
@@ -160,7 +162,7 @@ class MovieCell extends StatelessWidget {
                   child: new Column(
                     children: [
                       new Text(
-                        movies[i]['title'],
+                        movies[i]['name'],
                         style: new TextStyle(
                             fontSize: 20.0,
                             fontFamily: 'Arvo',

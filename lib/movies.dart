@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:movie_mate/movie_list.dart';
+import 'package:movie_mate/upcoming_movies.dart';
 import 'movie_details.dart';
 import 'homeMenu.dart';
 import 'package:video_player/video_player.dart';
@@ -91,6 +93,18 @@ class MovieState extends State<Movie> {
     });
   }
 
+  void topratedlist(BuildContext context) {
+    Navigator.push(context, new MaterialPageRoute(builder: (context) {
+      return new MovieList();
+    }));
+  }
+
+  void upcoming(BuildContext context) {
+    Navigator.push(context, new MaterialPageRoute(builder: (context) {
+      return new UpcomingMovieList();
+    }));
+  }
+
   var image_url1 = 'https://image.tmdb.org/t/p/w500/';
   @override
   Widget build(BuildContext context) {
@@ -156,18 +170,36 @@ class MovieState extends State<Movie> {
               //   child:
               //   Icon(_controller.value.isPlaying ? Icons.pause : Icons.play_arrow),
               // ),
-              new SizedBox(
-                height: 50,
+
+              new Row(
+                children: [
+                  new Text(
+                    'Top Rated Movies',
+                    style: new TextStyle(
+                        fontSize: 20.0,
+                        color: mainColor,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Poppins'),
+                    textAlign: TextAlign.left,
+                  ),
+                  new SizedBox(
+                    width: 160,
+                  ),
+                  new RaisedButton(
+                      child: Text('View All',
+                          style: new TextStyle(
+                              fontSize: 20.0,
+                              color: Colors.white,
+                              decoration: TextDecoration.underline,
+                              fontFamily: 'Poppins')),
+                      color: Colors.black,
+                      textColor: Colors.white,
+                      onPressed: () {
+                        topratedlist(context);
+                      }),
+                ],
               ),
-              new Text(
-                'Top Releases',
-                style: new TextStyle(
-                    fontSize: 20.0,
-                    color: mainColor,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Poppins'),
-                textAlign: TextAlign.left,
-              ),
+
               new Expanded(
                 child: new ListView.builder(
                     scrollDirection: Axis.horizontal,
@@ -187,14 +219,33 @@ class MovieState extends State<Movie> {
                     }),
               ),
 
-              new Text(
-                'Upcoming Releases',
-                style: new TextStyle(
-                    fontSize: 20.0,
-                    color: mainColor,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Poppins'),
-                textAlign: TextAlign.left,
+              new Row(
+                children: [
+                  new Text(
+                    'Upcoming Releases',
+                    style: new TextStyle(
+                        fontSize: 20.0,
+                        color: mainColor,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Poppins'),
+                    textAlign: TextAlign.left,
+                  ),
+                  new SizedBox(
+                    width: 145,
+                  ),
+                  new RaisedButton(
+                      child: Text('View All',
+                          style: new TextStyle(
+                              fontSize: 20.0,
+                              color: Colors.white,
+                              decoration: TextDecoration.underline,
+                              fontFamily: 'Poppins')),
+                      color: Colors.black,
+                      textColor: Colors.white,
+                      onPressed: () {
+                        upcoming(context);
+                      }),
+                ],
               ),
               new Expanded(
                 child: new ListView.builder(
