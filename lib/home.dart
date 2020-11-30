@@ -18,14 +18,13 @@ class Home extends StatefulWidget {
 // }
 
 // class VideoDemoState extends State<VideoDemo> {
-
 //   VideoPlayerController _controller;
 //   Future<void> _initializeVideoPlayerFuture;
 
 //   @override
 //   void initState() {
 //     // _controller = VideoPlayerController.network(
-//         // "https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4");
+//     // "https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4");
 //     _controller = VideoPlayerController.asset("videplayback.mp4");
 //     _initializeVideoPlayerFuture = _controller.initialize();
 //     _controller.setLooping(true);
@@ -48,7 +47,7 @@ class Home extends StatefulWidget {
 // }
 
 class HomeState extends State<Home> {
-  var movies, latest_movies;
+  var movies, latest_movies, topTV, popularTV;
   Color mainColor = Colors.orange;
 
   VideoPlayerController _controller;
@@ -89,20 +88,43 @@ class HomeState extends State<Home> {
     });
   }
 
+  void getTopRatedTVData() async {
+    var data = await getTopRatedTVJson();
+
+    setState(() {
+      topTV = data['results'];
+    });
+  }
+
+  void getPopularTVData() async {
+    var data = await getPopularTVJson();
+
+    setState(() {
+      popularTV = data['results'];
+    });
+  }
+
   var image_url1 = 'https://image.tmdb.org/t/p/w500/';
   @override
   Widget build(BuildContext context) {
     getData();
     getLatestData();
+    getTopRatedTVData();
+    getPopularTVData();
     return new Scaffold(
         backgroundColor: Colors.black,
         appBar: new AppBar(
           elevation: 0.3,
           centerTitle: true,
           backgroundColor: Colors.black,
-          leading: new Icon(
-            Icons.arrow_back,
-            color: mainColor,
+          leading: new InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: new Icon(
+              Icons.menu,
+              color: mainColor,
+            ),
           ),
           title: new Text(
             'Movie Mate',
@@ -111,36 +133,13 @@ class HomeState extends State<Home> {
                 fontFamily: 'Poppins',
                 fontWeight: FontWeight.bold),
           ),
-          actions: <Widget>[
-            new Icon(
-              Icons.menu,
-              color: mainColor,
-            )
-          ],
         ),
         body: new Padding(
-          padding: const EdgeInsets.all(10.0),
-          // scrollDirection: Axis.vertical,
-          child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          padding: EdgeInsets.all(10.0),
+          child: Column(
+            // shrinkWrap: true,
+            // padding: EdgeInsets.all(15.0),
             children: <Widget>[
-              FutureBuilder(
-                future: _initializeVideoPlayerFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    return Center(
-                      child: AspectRatio(
-                        aspectRatio: _controller.value.aspectRatio,
-                        child: VideoPlayer(_controller),
-                      ),
-                    );
-                  } else {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
-              ),
               // floatingActionButton: FloatingActionButton(
               //   onPressed: () {
               //     setState(() {
@@ -154,6 +153,7 @@ class HomeState extends State<Home> {
               //   child:
               //   Icon(_controller.value.isPlaying ? Icons.pause : Icons.play_arrow),
               // ),
+
               new Text(
                 'Top Releases',
                 style: new TextStyle(
@@ -209,6 +209,62 @@ class HomeState extends State<Home> {
                       );
                     }),
               ),
+
+              new Text(
+                'Top Rated Series',
+                style: new TextStyle(
+                    fontSize: 20.0,
+                    color: mainColor,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins'),
+                textAlign: TextAlign.left,
+              ),
+              new Expanded(
+                child: new ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 5,
+                    itemBuilder: (context, i) {
+                      return new FlatButton(
+                        child: new HomeMovieCell(topTV, i),
+                        padding: const EdgeInsets.all(0.0),
+                        onPressed: () {
+                          Navigator.push(context,
+                              new MaterialPageRoute(builder: (context) {
+                            return new MovieDetail(topTV[i]);
+                          }));
+                        },
+                        color: Colors.black,
+                      );
+                    }),
+              ),
+
+              new Text(
+                'Popular TV Series',
+                style: new TextStyle(
+                    fontSize: 20.0,
+                    color: mainColor,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins'),
+                textAlign: TextAlign.left,
+              ),
+              new Expanded(
+                child: new ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 5,
+                    itemBuilder: (context, i) {
+                      return new FlatButton(
+                        child: new HomeMovieCell(popularTV, i),
+                        padding: const EdgeInsets.all(0.0),
+                        onPressed: () {
+                          Navigator.push(context,
+                              new MaterialPageRoute(builder: (context) {
+                            return new MovieDetail(popularTV[i]);
+                          }));
+                        },
+                        color: Colors.black,
+                      );
+                    }),
+              ),
             ],
           ),
         ));
@@ -235,6 +291,26 @@ Future<Map> getLatestJson() async {
   return json.decode(response.body);
 }
 
+Future<Map> getTopRatedTVJson() async {
+  var url =
+      // 'https://api.themoviedb.org/3/movie/top_rated?api_key=45bf6592c14a965b33549f4cc7e6c664';
+      'http://api.themoviedb.org/3/tv/top_rated?api_key=45bf6592c14a965b33549f4cc7e6c664&append_to_response=videos';
+
+  // http://api.themoviedb.org/3/movie/131634?api_key=45bf6592c14a965b33549f4cc7e6c664&append_to_response=videos
+  var response = await http.get(url);
+  return json.decode(response.body);
+}
+
+Future<Map> getPopularTVJson() async {
+  var url =
+      // 'https://api.themoviedb.org/3/movie/top_rated?api_key=45bf6592c14a965b33549f4cc7e6c664';
+      'http://api.themoviedb.org/3/tv/popular?api_key=45bf6592c14a965b33549f4cc7e6c664';
+
+  // http://api.themoviedb.org/3/movie/131634?api_key=45bf6592c14a965b33549f4cc7e6c664&append_to_response=videos
+  var response = await http.get(url);
+  return json.decode(response.body);
+}
+
 class HomeMovieCell extends StatelessWidget {
   final movies;
   final i;
@@ -255,7 +331,7 @@ class HomeMovieCell extends StatelessWidget {
 //                                child: new Image.network(image_url+movies[i]['poster_path'],width: 100.0,height: 100.0),
                 child: new Container(
                   width: 100.0,
-                  height: 170.0,
+                  height: 130.0,
                 ),
                 decoration: new BoxDecoration(
                   borderRadius: new BorderRadius.circular(10.0),

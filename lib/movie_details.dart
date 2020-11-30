@@ -91,9 +91,11 @@ class MovieDetail extends StatelessWidget {
                       child: new Container(
                         padding: const EdgeInsets.all(16.0),
                         alignment: Alignment.center,
-                        child: new Icon(
-                          Icons.star,
-                          color: Colors.white,
+                        child: new InkWell(
+                          child: new Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                          ),
                         ),
                         decoration: new BoxDecoration(
                             borderRadius: new BorderRadius.circular(10.0),
