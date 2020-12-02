@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "584094696070",
-    "firebase_url": "https://movie-mate-1479c.firebaseio.com",
-    "project_id": "movie-mate-1479c",
-    "storage_bucket": "movie-mate-1479c.appspot.com"
+    "project_number": "40293526946",
+    "firebase_url": "https://moviemate-30ef6.firebaseio.com",
+    "project_id": "moviemate-30ef6",
+    "storage_bucket": "moviemate-30ef6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:584094696070:android:24e793bd1a0168c7a04707",
+        "mobilesdk_app_id": "1:40293526946:android:cf7211a9472a6dfb4596fb",
         "android_client_info": {
-          "package_name": "com.moviemate"
+          "package_name": "com.example.movie_mate"
         }
       },
       "oauth_client": [
         {
-          "client_id": "584094696070-mq5n4mt994nnn44nsnlph6efplf831qh.apps.googleusercontent.com",
+          "client_id": "40293526946-sj790pa4rtj91cboqdcijgajgcb5oc5v.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAr4FC5gYkT8mjvBY5_g0pKhArkRCvPBkw"
+          "current_key": "AIzaSyAvD93BdIEqNjdKLtwr6gIy___LdyVrLU0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "584094696070-mq5n4mt994nnn44nsnlph6efplf831qh.apps.googleusercontent.com",
+              "client_id": "40293526946-sj790pa4rtj91cboqdcijgajgcb5oc5v.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
