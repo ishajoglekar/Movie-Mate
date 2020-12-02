@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'signup.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:firebase_showcase/pages/home.dart';
 import 'home.dart';
 import 'Widget/bezierContainer.dart';
 
@@ -14,15 +11,9 @@ class LoginPage extends StatefulWidget {
 
   @override
   _LoginPageState createState() => _LoginPageState();
-
-  
 }
 
 class _LoginPageState extends State<LoginPage> {
-  
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _email, _password;
-  
   Widget _backButton() {
     return InkWell(
       onTap: () {
@@ -204,17 +195,4 @@ class _LoginPageState extends State<LoginPage> {
       ),
     ));
   }
-
- void signIn() async {
-    if(_formKey.currentState.validate()){
-      _formKey.currentState.save();
-      try{
-        FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => Home(user: user)));
-      }catch(e){
-        print(e.message);
-      }
-    }
-  }
-
 }
