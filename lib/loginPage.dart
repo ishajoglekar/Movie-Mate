@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'signup.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,6 +15,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  String _email, _password;
+  final auth = FirebaseAuth.instance;
+  //final _formKey = GlobalKey<FormState>();
+  @override
   Widget _backButton() {
     return InkWell(
       onTap: () {
@@ -50,11 +55,23 @@ class _LoginPageState extends State<LoginPage> {
             height: 10,
           ),
           TextField(
+              //validator: (val)=> val.isEmpty ? "Please enter your credintials" : null,
               obscureText: isPassword,
               decoration: InputDecoration(
                   border: InputBorder.none,
                   fillColor: Colors.white,
-                  filled: true))
+                  filled: true),
+              onChanged: (value){
+                setState(() {
+                  if (title=="Email id") {
+                    _email=value.trim();
+                  } else {
+                    _password=value.trim();
+                  }
+                  //title = value.trim();
+                });
+              },    
+          )        
         ],
       ),
     );
@@ -63,8 +80,11 @@ class _LoginPageState extends State<LoginPage> {
   Widget _submitButton() {
     return InkWell(
         onTap: () {
+          
+          auth.signInWithEmailAndPassword(email: _email, password: _password);
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => Home()));
+               
         },
         child: Container(
           width: MediaQuery.of(context).size.width,

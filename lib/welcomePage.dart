@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_mate/signintry.dart';
 import 'loginPage.dart';
 import 'signup.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,7 +18,7 @@ class _WelcomePageState extends State<WelcomePage> {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoginPage()));
+            context, MaterialPageRoute(builder: (context) => SignIn()));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,

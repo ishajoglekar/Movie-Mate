@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_mate/movies.dart';
 import 'package:movie_mate/movies_menu.dart';
@@ -19,6 +20,8 @@ class HomeMenu extends StatefulWidget {
 }
 
 class _HomeMenuState extends State<HomeMenu> {
+  final auth = FirebaseAuth.instance;
+  @override
   Widget _homeButton() {
     return InkWell(
       onTap: () {
@@ -62,6 +65,7 @@ class _HomeMenuState extends State<HomeMenu> {
   Widget _moviesButton() {
     return InkWell(
       onTap: () {
+        auth.signOut();
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => Movie()));
       },
@@ -84,6 +88,7 @@ class _HomeMenuState extends State<HomeMenu> {
   Widget _logoutButton() {
     return InkWell(
       onTap: () {
+        auth.signOut();
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => WelcomePage()));
       },

@@ -195,6 +195,7 @@ class HomeState extends State<Home> {
                     fontFamily: 'Poppins'),
                 textAlign: TextAlign.left,
               ),
+              
               new Expanded(
                 child: new ListView.builder(
                     scrollDirection: Axis.horizontal,
@@ -284,7 +285,8 @@ class HomeMovieCell extends StatelessWidget {
           height: 0.2,
           color: Colors.black,
           margin: const EdgeInsets.all(10.0),
-        )
+        ),
+        
       ],
     );
   }
